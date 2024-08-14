@@ -94,11 +94,11 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         }
-        #result {
+        #result, #finalUrlSection {
             margin-top: 1.5rem;
             text-align: left;
         }
-        #result h2 {
+        #result h2, #finalUrlSection h2 {
             color: var(--accent-color);
             margin-bottom: 1rem;
         }
@@ -111,13 +111,31 @@
         .hidden {
             display: none;
         }
-        .url-template {
+        .url-template, #finalUrl {
             background-color: rgba(255,255,255,0.8);
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             margin-top: 10px;
             word-break: break-all;
+        }
+        #versionInput {
+            width: calc(100% - 30px);
+            margin-top: 10px;
+        }
+        #generateFinalUrl {
+            margin-top: 10px;
+            background-color: var(--accent-color);
+        }
+        #generateFinalUrl:hover {
+            background-color: #2980b9;
+        }
+        #downloadButton {
+            margin-top: 10px;
+            background-color: #27ae60;
+        }
+        #downloadButton:hover {
+            background-color: #2ecc71;
         }
         @media (max-width: 600px) {
             .container {
@@ -152,15 +170,27 @@
             <h2>Download Instructions</h2>
             <ol id="instructions"></ol>
         </div>
+        <div id="finalUrlSection" class="hidden">
+            <h2>Generate Final Download URL</h2>
+            <input type="text" id="versionInput" placeholder="Enter the version number">
+            <button id="generateFinalUrl" onclick="generateFinalUrl()">Generate Final URL</button>
+            <div id="finalUrl" class="hidden"></div>
+            <button id="downloadButton" class="hidden" onclick="downloadExtension()">Download Extension</button>
+        </div>
     </div>
 
     <script>
+        let urlTemplate = '';
+        let extensionName = '';
+
         function generateGuide() {
             const url = document.getElementById('extensionUrl').value;
             const resultElement = document.getElementById('result');
             const instructionsElement = document.getElementById('instructions');
+            const finalUrlSection = document.getElementById('finalUrlSection');
 
             resultElement.classList.add('hidden');
+            finalUrlSection.classList.add('hidden');
             instructionsElement.innerHTML = '';
 
             if (!url) {
@@ -177,17 +207,15 @@
                 }
 
                 const [publisher, extension] = itemName.split('.');
+                extensionName = itemName;
 
-                const urlTemplate = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
+                urlTemplate = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
 
                 const instructions = [
                     `Visit the extension page: <a href="${url}" target="_blank">${url}</a>`,
                     "On the extension page, look for the 'Version' number in the right sidebar.",
-                    "Use the URL template below, replacing [VERSION] with the version number you found:",
-                    `<div class="url-template">${urlTemplate}</div>`,
-                    "Open the modified URL in a new tab to download the VSIX file.",
-                    `Save the file with a name like ${itemName}_[VERSION].vsix`,
-                    "You can now install this VSIX file in VS Code manually."
+                    "Copy the version number (e.g., 1.2.3) and paste it in the input field below.",
+                    "Click 'Generate Final URL' to get the download link."
                 ];
 
                 instructions.forEach(instruction => {
@@ -197,8 +225,41 @@
                 });
 
                 resultElement.classList.remove('hidden');
+                finalUrlSection.classList.remove('hidden');
             } catch (error) {
                 alert(`An error occurred: ${error.message}`);
+            }
+        }
+
+        function generateFinalUrl() {
+            const versionInput = document.getElementById('versionInput');
+            const finalUrlElement = document.getElementById('finalUrl');
+            const downloadButton = document.getElementById('downloadButton');
+
+            if (!versionInput.value) {
+                alert('Please enter a version number');
+                return;
+            }
+
+            const finalUrl = urlTemplate.replace('[VERSION]', versionInput.value);
+            finalUrlElement.textContent = finalUrl;
+            finalUrlElement.classList.remove('hidden');
+            downloadButton.classList.remove('hidden');
+        }
+
+        function downloadExtension() {
+            const finalUrlElement = document.getElementById('finalUrl');
+            const versionInput = document.getElementById('versionInput');
+            
+            if (finalUrlElement.textContent) {
+                const link = document.createElement('a');
+                link.href = finalUrlElement.textContent;
+                link.download = `${extensionName}_${versionInput.value}.vsix`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert('Please generate the final URL first');
             }
         }
     </script>
