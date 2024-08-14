@@ -111,6 +111,14 @@
         .hidden {
             display: none;
         }
+        .url-template {
+            background-color: rgba(255,255,255,0.8);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            word-break: break-all;
+        }
         @media (max-width: 600px) {
             .container {
                 width: 95%;
@@ -170,11 +178,13 @@
 
                 const [publisher, extension] = itemName.split('.');
 
+                const urlTemplate = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
+
                 const instructions = [
                     `Visit the extension page: <a href="${url}" target="_blank">${url}</a>`,
                     "On the extension page, look for the 'Version' number in the right sidebar.",
-                    `Copy this URL template: <code>https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage</code>`,
-                    "Replace [VERSION] in the URL with the version number you found on the extension page.",
+                    "Use the URL template below, replacing [VERSION] with the version number you found:",
+                    `<div class="url-template">${urlTemplate}</div>`,
                     "Open the modified URL in a new tab to download the VSIX file.",
                     `Save the file with a name like ${itemName}_[VERSION].vsix`,
                     "You can now install this VSIX file in VS Code manually."
