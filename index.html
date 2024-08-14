@@ -130,12 +130,25 @@
         #generateFinalUrl:hover {
             background-color: #2980b9;
         }
-        #downloadButton {
+        .download-buttons {
+            display: flex;
+            justify-content: space-between;
             margin-top: 10px;
+        }
+        .download-buttons button {
+            width: 48%;
+        }
+        #downloadVSIX {
             background-color: #27ae60;
         }
-        #downloadButton:hover {
+        #downloadVSIX:hover {
             background-color: #2ecc71;
+        }
+        #downloadVSIXPackage {
+            background-color: #8e44ad;
+        }
+        #downloadVSIXPackage:hover {
+            background-color: #9b59b6;
         }
         @media (max-width: 600px) {
             .container {
@@ -144,6 +157,13 @@
             }
             h1 {
                 font-size: 2rem;
+            }
+            .download-buttons {
+                flex-direction: column;
+            }
+            .download-buttons button {
+                width: 100%;
+                margin-top: 10px;
             }
         }
     </style>
@@ -171,16 +191,20 @@
             <ol id="instructions"></ol>
         </div>
         <div id="finalUrlSection" class="hidden">
-            <h2>Generate Final Download URL</h2>
+            <h2>Generate Final Download URLs</h2>
             <input type="text" id="versionInput" placeholder="Enter the version number">
-            <button id="generateFinalUrl" onclick="generateFinalUrl()">Generate Final URL</button>
+            <button id="generateFinalUrl" onclick="generateFinalUrls()">Generate Final URLs</button>
             <div id="finalUrl" class="hidden"></div>
-            <button id="downloadButton" class="hidden" onclick="downloadExtension()">Download Extension</button>
+            <div class="download-buttons hidden">
+                <button id="downloadVSIX" onclick="downloadExtension('vsix')">Download VSIX</button>
+                <button id="downloadVSIXPackage" onclick="downloadExtension('vsixpackage')">Download VSIXPackage</button>
+            </div>
         </div>
     </div>
 
     <script>
-        let urlTemplate = '';
+        let urlTemplateVSIX = '';
+        let urlTemplateVSIXPackage = '';
         let extensionName = '';
 
         function generateGuide() {
@@ -209,13 +233,14 @@
                 const [publisher, extension] = itemName.split('.');
                 extensionName = itemName;
 
-                urlTemplate = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
+                urlTemplateVSIX = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
+                urlTemplateVSIXPackage = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/vspackage`;
 
                 const instructions = [
                     `Visit the extension page: <a href="${url}" target="_blank">${url}</a>`,
                     "On the extension page, look for the 'Version' number in the right sidebar.",
                     "Copy the version number (e.g., 1.2.3) and paste it in the input field below.",
-                    "Click 'Generate Final URL' to get the download link."
+                    "Click 'Generate Final URLs' to get the download links for both VSIX and VSIXPackage."
                 ];
 
                 instructions.forEach(instruction => {
@@ -231,36 +256,51 @@
             }
         }
 
-        function generateFinalUrl() {
+        function generateFinalUrls() {
             const versionInput = document.getElementById('versionInput');
             const finalUrlElement = document.getElementById('finalUrl');
-            const downloadButton = document.getElementById('downloadButton');
+            const downloadButtons = document.querySelector('.download-buttons');
 
             if (!versionInput.value) {
                 alert('Please enter a version number');
                 return;
             }
 
-            const finalUrl = urlTemplate.replace('[VERSION]', versionInput.value);
-            finalUrlElement.textContent = finalUrl;
+            const finalUrlVSIX = urlTemplateVSIX.replace('[VERSION]', versionInput.value);
+            const finalUrlVSIXPackage = urlTemplateVSIXPackage.replace('[VERSION]', versionInput.value);
+
+            finalUrlElement.innerHTML = `
+                <strong>VSIX URL:</strong><br>${finalUrlVSIX}<br><br>
+                <strong>VSIXPackage URL:</strong><br>${finalUrlVSIXPackage}
+            `;
             finalUrlElement.classList.remove('hidden');
-            downloadButton.classList.remove('hidden');
+            downloadButtons.classList.remove('hidden');
         }
 
-        function downloadExtension() {
-            const finalUrlElement = document.getElementById('finalUrl');
+        function downloadExtension(type) {
             const versionInput = document.getElementById('versionInput');
+            const version = versionInput.value;
             
-            if (finalUrlElement.textContent) {
-                const link = document.createElement('a');
-                link.href = finalUrlElement.textContent;
-                link.download = `${extensionName}_${versionInput.value}.vsix`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else {
-                alert('Please generate the final URL first');
+            if (!version) {
+                alert('Please generate the final URLs first');
+                return;
             }
+
+            let url, filename;
+            if (type === 'vsix') {
+                url = urlTemplateVSIX.replace('[VERSION]', version);
+                filename = `${extensionName}_${version}.vsix`;
+            } else {
+                url = urlTemplateVSIXPackage.replace('[VERSION]', version);
+                filename = `${extensionName}_${version}.vsixpackage`;
+            }
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
