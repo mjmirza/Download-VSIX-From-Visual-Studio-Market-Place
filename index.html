@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Code Extension Download Guide</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.5) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transform: perspective(1000px) rotateX(5deg);
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            transform: perspective(1000px) rotateX(0deg);
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            display: block;
+            filter: drop-shadow(0 0 10px var(--accent-color));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            background-color: rgba(255,255,255,0.8);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-color);
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        #result {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        #result h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        #result ol {
+            padding-left: 20px;
+        }
+        #result li {
+            margin-bottom: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <rect x="10" y="10" width="80" height="80" rx="15" fill="url(#logo-gradient)"/>
+            <path d="M22 50L38 34L54 50L38 66L22 50Z" fill="white"/>
+            <path d="M38 34L70 22V78L38 66L38 34Z" fill="white"/>
+        </svg>
+        <h1>VS Code Extension Download Guide</h1>
+        <div class="input-container">
+            <input type="text" id="extensionUrl" placeholder="Enter VS Code extension URL">
+        </div>
+        <button onclick="generateGuide()">Generate Download Guide</button>
+        <div id="result" class="hidden">
+            <h2>Download Instructions</h2>
+            <ol id="instructions"></ol>
+        </div>
+    </div>
+
+    <script>
+        function generateGuide() {
+            const url = document.getElementById('extensionUrl').value;
+            const resultElement = document.getElementById('result');
+            const instructionsElement = document.getElementById('instructions');
+
+            resultElement.classList.add('hidden');
+            instructionsElement.innerHTML = '';
+
+            if (!url) {
+                alert('Please enter a valid URL');
+                return;
+            }
+
+            try {
+                const parsedUrl = new URL(url);
+                const itemName = parsedUrl.searchParams.get('itemName');
+
+                if (!itemName) {
+                    throw new Error('Invalid URL. Please make sure it\'s a VS Code extension URL.');
+                }
+
+                const [publisher, extension] = itemName.split('.');
+
+                const instructions = [
+                    `Visit the extension page: <a href="${url}" target="_blank">${url}</a>`,
+                    "On the extension page, look for the 'Version' number in the right sidebar.",
+                    `Copy this URL template: <code>https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage</code>`,
+                    "Replace [VERSION] in the URL with the version number you found on the extension page.",
+                    "Open the modified URL in a new tab to download the VSIX file.",
+                    `Save the file with a name like ${itemName}_[VERSION].vsix`,
+                    "You can now install this VSIX file in VS Code manually."
+                ];
+
+                instructions.forEach(instruction => {
+                    const li = document.createElement('li');
+                    li.innerHTML = instruction;
+                    instructionsElement.appendChild(li);
+                });
+
+                resultElement.classList.remove('hidden');
+            } catch (error) {
+                alert(`An error occurred: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
