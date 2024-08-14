@@ -207,15 +207,25 @@
         let urlTemplateVSIXPackage = '';
         let extensionName = '';
 
+        function resetProcess() {
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('finalUrlSection').classList.add('hidden');
+            document.getElementById('instructions').innerHTML = '';
+            document.getElementById('versionInput').value = '';
+            document.getElementById('finalUrl').innerHTML = '';
+            document.getElementById('finalUrl').classList.add('hidden');
+            document.querySelector('.download-buttons').classList.add('hidden');
+        }
+
+        document.getElementById('extensionUrl').addEventListener('input', resetProcess);
+
         function generateGuide() {
             const url = document.getElementById('extensionUrl').value;
             const resultElement = document.getElementById('result');
             const instructionsElement = document.getElementById('instructions');
             const finalUrlSection = document.getElementById('finalUrlSection');
 
-            resultElement.classList.add('hidden');
-            finalUrlSection.classList.add('hidden');
-            instructionsElement.innerHTML = '';
+            resetProcess();
 
             if (!url) {
                 alert('Please enter a valid URL');
