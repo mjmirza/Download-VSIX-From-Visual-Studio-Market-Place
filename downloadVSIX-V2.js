@@ -73,7 +73,7 @@
         for (let i = 0; i < metadataRows.length; i++) {
             const row = metadataRows[i];
             const cells = row.querySelectorAll("td");
-            if (cells.length === 2) {
+            if (cells.length > 1) {
                 const key = cells[0].innerText.trim();
                 const value = cells[1].innerText.trim();
                 if (metadataMap.hasOwnProperty(key)) {
@@ -83,7 +83,7 @@
         }
 
         // Find the element with the class "vscode-moreinformation"
-        const moreInfoElement = document.querySelector(".vscode-moreinformation");
+        const moreInfoElement = document.querySelector(".ms-Fabric.root-38");
         if (moreInfoElement) {
             // Append the download button to the parent element
             moreInfoElement.parentElement.appendChild(extensionData.getDownloadButton());
@@ -93,7 +93,6 @@
     }
     )()
 }();
-
 
 /***
 // Second Script: Opens the VSIX file in a new tab
