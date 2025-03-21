@@ -9,6 +9,13 @@ This script allows you to download VS Code extensions as VSIX files directly fro
 3. **Paste the script into the console and press Enter.**
 4. **A "Download VSIX" button will appear on the page.** Click it to download the VSIX file.
 
+Or
+
+1. **Copy all content from "downloadVSIX-V2.bookmark"**
+2. **Create a bookmark in your browser (tested with Chrome) and paste the content as the URL.**
+3. **Open the VS Code extension page on the Visual Studio Marketplace.**
+4. **Click on the bookmark and the VSIX file will be downloaded automatically.**
+
 ## Script Breakdown
 
 The script consists of two parts:
