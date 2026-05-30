@@ -185,7 +185,78 @@ details.help code {
     border-radius: 5px;
     font-size: 0.82rem;
 }
+.chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.6rem; }
+.chips:empty { display: none; }
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.25rem 0.3rem 0.25rem 0.7rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+.chip.flash { animation: chipflash 0.5s ease; }
+@keyframes chipflash {
+    0%, 100% { box-shadow: 0 0 0 0 var(--accent-soft); }
+    40% { box-shadow: 0 0 0 3px var(--accent-soft); }
+}
+.chip-x {
+    border: none;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 1.05rem;
+    line-height: 1;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+}
+.chip-x:hover { color: var(--on-accent); background: var(--accent); }
+.combo { position: relative; }
+.combo-icon {
+    position: absolute;
+    left: 0.8rem;
+    top: 1.15rem;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    display: flex;
+}
+.combo input { padding-left: 2.4rem; }
+.suggest {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 20;
+    margin: 0;
+    padding: 0.3rem;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    max-height: 320px;
+    overflow-y: auto;
+}
+.suggest[hidden] { display: none; }
+.suggest-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 7px;
+    cursor: pointer;
+}
+.suggest-item.active, .suggest-item:hover { background: var(--surface-2); }
+.suggest-name { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+.suggest-id { font-size: 0.76rem; color: var(--muted); font-family: ui-monospace, Menlo, Consolas, monospace; }
+.card.loading { opacity: 0.7; }
 footer { margin-top: 2.5rem; color: var(--muted); font-size: 0.82rem; text-align: center; }
+footer p { margin: 0.3rem 0; }
 footer a { color: var(--muted); }
 @media (max-width: 540px) {
     .controls { grid-template-columns: 1fr; }

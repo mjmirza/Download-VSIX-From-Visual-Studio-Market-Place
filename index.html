@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VSIX Downloader for the Visual Studio Marketplace</title>
-    <meta name="description" content="Download any VS Code extension as a VSIX file directly from the Visual Studio Marketplace. Pick any version and any OS specific build. No install, no tracking, runs fully in your browser.">
+    <meta name="description" content="Download any VS Code extension as a VSIX file directly from the Visual Studio Marketplace. Search by name, pick any version and any OS specific build. No install, no tracking, runs fully in your browser.">
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7a52' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 11 5 5 5-5'/%3E%3Cpath d='M5 21h14'/%3E%3C/svg%3E">
@@ -27,15 +27,21 @@
         </header>
 
         <main class="panel">
-            <label class="field-label" for="input">Marketplace link, extension id, or app name</label>
-            <p class="hint">Paste one or more, one per line. Each line can be a full marketplace URL, a publisher.extension id such as <code>esbenp.prettier-vscode</code>, or a plain app name to search the marketplace.</p>
-            <textarea id="input" spellcheck="false" placeholder="esbenp.prettier-vscode&#10;ms-vscode.cpptools&#10;python"></textarea>
+            <label class="field-label" for="search">Find an extension</label>
+            <p class="hint">Type an app name to search, or paste a marketplace URL or a publisher.extension id such as <code>esbenp.prettier-vscode</code>. Press Enter or click a suggestion to add it. Add as many as you like.</p>
+
+            <div id="chips" class="chips" aria-label="Selected extensions"></div>
+
+            <div class="combo">
+                <span class="combo-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                </span>
+                <input id="search" type="text" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="suggest" aria-label="Search the marketplace" autocomplete="off" spellcheck="false" placeholder="Search the marketplace, for example claude">
+                <ul id="suggest" class="suggest" role="listbox" aria-label="Suggestions" hidden></ul>
+            </div>
+
             <div class="row-actions">
-                <button id="fetchBtn" class="btn btn-primary" type="button">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                    Fetch extensions
-                </button>
-                <button id="clearBtn" class="btn btn-ghost" type="button">Clear</button>
+                <button id="clearBtn" class="btn btn-ghost" type="button">Clear all</button>
             </div>
             <p id="status" class="status" role="status" aria-live="polite"></p>
         </main>
@@ -45,7 +51,7 @@
         <details class="help">
             <summary>How it works and is it safe</summary>
             <h3>What this does</h3>
-            <p>It asks the official Visual Studio Marketplace gallery service for the version list of the extension you name, then builds the official Microsoft download link for the VSIX you pick. The file is served straight from Microsoft servers.</p>
+            <p>It asks the official Visual Studio Marketplace gallery service for the version list of the extension you pick, then builds the official Microsoft download link for the VSIX you choose. The file is served straight from Microsoft servers.</p>
             <h3>Privacy and safety</h3>
             <ul>
                 <li>Runs entirely in your browser. There is no backend, no account, no tracking, and no analytics.</li>
@@ -53,15 +59,18 @@
                 <li>Zero dependencies and zero build step. Open the page source and read every line yourself.</li>
             </ul>
             <h3>Search by name</h3>
-            <p>If a line is not a link or an id, it is treated as a search. Type <code>python</code> or <code>docker</code> and the top matching extensions appear, each with its own version and platform menu.</p>
+            <p>Type a name such as <code>python</code> or <code>docker</code>. A live suggestion list appears. Use the arrow keys and Enter, or click, to add the one you want. Each pick becomes a chip with its own version and platform controls.</p>
             <h3>OS specific builds</h3>
             <p>Some extensions such as the C and C++ tools ship a separate VSIX per platform. When that happens a platform menu appears so you can choose the right build for Windows, macOS, Linux, or Alpine, on x64 or arm.</p>
             <h3>Offline install</h3>
             <p>In VS Code open the Extensions view, use the menu in the top corner, choose Install from VSIX, and select the file you downloaded.</p>
+            <h3>Legal and trademarks</h3>
+            <p>This is an independent open source tool. It is not affiliated with, endorsed by, or sponsored by Microsoft or by any extension publisher. Visual Studio, VS Code, and the Visual Studio Marketplace are trademarks of Microsoft. This tool does not host, modify, or redistribute any extension. It builds the official Microsoft download links, and every file comes straight from Microsoft servers. Your use of the marketplace and of each extension is governed by the Visual Studio Marketplace Terms of Use and by each extension license. You are responsible for following them.</p>
         </details>
 
         <footer>
             <p>Open source on <a href="https://github.com/mjmirza/Download-VSIX-From-Visual-Studio-Market-Place" target="_blank" rel="noopener">GitHub</a>. Released under the MIT License.</p>
+            <p>Independent tool, not affiliated with Microsoft. Use is subject to the <a href="https://aka.ms/VSMarketplace-ToU" target="_blank" rel="noopener">Visual Studio Marketplace Terms of Use</a>.</p>
         </footer>
     </div>
 

@@ -7,6 +7,19 @@ Keep a Changelog, and the project aims to follow semantic versioning.
 
 Nothing yet.
 
+## [1.1.0] - 2026-05-30
+
+### Added
+
+- Search as you type. The web tool now shows a live suggestion dropdown as you type an app name, with keyboard navigation. Before, a name search dumped a long list of result cards at once. Now you pick from a dropdown and add only what you want.
+- Selected extensions appear as removable chips, each with its own download card. Remove one with the x on its chip, or press Backspace on an empty search box.
+- A legal and trademarks note in the tool and the README. It states that this is an independent project, not affiliated with Microsoft, that nothing is redistributed, and that use is subject to the Visual Studio Marketplace Terms of Use.
+
+### Changed
+
+- The big paste box was replaced by a single search field with the dropdown. Pasting a URL or a publisher.extension id and pressing Enter still works.
+- Hardened the marketplace calls against rate limiting. Searches are cancelled when superseded, results and version lookups are cached for the session, and a busy response is retried with a backoff and shown as a plain message.
+
 ## [1.0.0] - 2026-05-30
 
 This release rebuilds the tool around the official Microsoft gallery API and
