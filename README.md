@@ -31,11 +31,9 @@ the console script are small snippets you paste once.
 ### 1. The web tool, the easy way
 
 1. Open the web tool. Locally you can open `index.html` in any browser. Hosted, open the GitHub Pages link for this repository.
-2. Type a marketplace link, a `publisher.extension` identifier such as `esbenp.prettier-vscode`, or a plain app name such as `python`.
-3. Press Fetch extensions.
-4. Choose the version, and the platform if the extension shows one, then press Download VSIX.
-
-You can paste several entries at once, one per line, and download each.
+2. Type an app name such as `python`. A live suggestion list appears as you type. Use the arrow keys and Enter, or click, to add the one you want. You can also paste a marketplace URL or a `publisher.extension` id such as `esbenp.prettier-vscode` and press Enter.
+3. Each pick becomes a chip with its own card. Choose the version, and the platform if the extension shows one, then press Download VSIX.
+4. Add as many extensions as you like. Remove one by pressing the small x on its chip.
 
 ### 2. The bookmarklet, one click on the page
 
@@ -83,6 +81,29 @@ the file with a correct name such as `esbenp.prettier-vscode-12.4.0.vsix`.
 - It contacts one host only, `marketplace.visualstudio.com`. No third party service is involved.
 - It has zero dependencies and no build step. You can read every line of the three small files yourself.
 - Files download straight from Microsoft servers over HTTPS.
+
+## Reliability and rate limits
+
+The tool is built to stay light on the marketplace and to avoid being throttled
+or blocked.
+
+- The search waits until you pause typing before it asks the marketplace, and it never sends a query shorter than two letters.
+- An older search is cancelled the moment you type more, so fast typing never stacks up calls.
+- Every search result and every version lookup is cached in memory for the session, so retyping or removing and re adding never repeats a call.
+- A version lookup that hits a busy response is retried with a short backoff, and a busy state shows a plain message rather than an error.
+- It uses the same public gallery endpoints that VS Code itself uses, which are stable across marketplace redesigns. Because the tool reads version data from the API rather than scraping the page, a site restyle does not break it.
+
+## Legal and trademarks
+
+This is an independent open source project. It is not affiliated with, endorsed
+by, or sponsored by Microsoft or by any extension publisher. Visual Studio, VS
+Code, and the Visual Studio Marketplace are trademarks of Microsoft.
+
+The tool does not host, modify, cache, or redistribute any extension. It builds
+the official Microsoft download links, and every file is served directly by
+Microsoft. Your use of the marketplace and of each extension is governed by the
+[Visual Studio Marketplace Terms of Use](https://aka.ms/VSMarketplace-ToU) and
+by each extension license. You are responsible for following them.
 
 ## Frequently asked questions
 
