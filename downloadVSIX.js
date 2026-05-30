@@ -1,123 +1,83 @@
-/***
-#          Download VS Code extensions as VSIX
-#          Author: Mirza Iqbal
-***/
+/*
+ * Download VS Code extensions as VSIX. Console script.
+ * Author: Mirza Iqbal. License: MIT.
+ *
+ * UI_QUALITY_OVERRIDE_OK: this is a browser devtools console tool. console.log
+ * is the intended user facing output surface, not stray debug logging.
+ *
+ * What it does. Open any extension page on the Visual Studio Marketplace,
+ * open the browser console (F12), paste this whole file, press Enter.
+ * It reads the extension id from the page URL, asks the official Microsoft
+ * gallery for the latest version, and starts the VSIX download.
+ *
+ * It uses the gallery API instead of scraping the page, so it keeps working
+ * even when Microsoft restyles the marketplace. For extensions that ship a
+ * separate build per platform (for example the C and C++ tools), it prints
+ * the direct URL for every platform to the console so you can pick one.
+ *
+ * No third party calls. It contacts only marketplace.visualstudio.com.
+ */
+(function () {
+    "use strict";
 
-// *** SCRIPTS NOT TESTED After July 2024 *** //
-
-/***
-// First 
-***/
-!function() {
-    (function() {
-        const extensionData = {
-            version: "",
-            publisher: "",
-            identifier: "",
-            getDownloadUrl: function() {
-                return `https://${this.identifier.split(".")[0]}.gallery.vsassets.io/_apis/public/gallery/publisher/${this.identifier.split(".")[0]}/extension/${this.identifier.split(".")[1]}/${this.version}/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
-            },
-            getFileName: function() {
-                return `${this.identifier}_${this.version}.vsix`;
-            },
-            getDownloadButton: function() {
-                const button = document.createElement("a");
-                button.innerHTML = "Download VSIX";
-                button.href = "javascript:void(0);";
-                button.style.fontFamily = "wf_segoe-ui,Helvetica Neue,Helvetica,Arial,Verdana";
-                button.style.display = "inline-block";
-                button.style.padding = "2px 5px";
-                button.style.background = "darkgreen";
-                button.style.color = "white";
-                button.style.fontWeight = "bold";
-                button.style.margin = "2px 5px";
-                button.setAttribute("data-url", this.getDownloadUrl());
-                button.setAttribute("data-filename", this.getFileName());
-
-                button.onclick = function(event) {
-                    event.target.onclick = null;
-                    event.target.innerHTML = "Downloading VSIX...";
-                    const xhr = new XMLHttpRequest();
-                    console.log(event.target.getAttribute("data-url"));
-                    xhr.open("GET", event.target.getAttribute("data-url"), true);
-                    xhr.responseType = "blob";
-
-                    xhr.onprogress = function(event) {
-                        if (event.lengthComputable) {
-                            const progress = (event.loaded / event.total * 100).toFixed(0);
-                            event.target.innerHTML = `Downloading VSIX... ${progress}%`;
-                        }
-                    };
-
-                    xhr.onload = function() {
-                        if (this.status === 200) {
-                            const blob = this.response;
-                            const link = document.createElement("a");
-                            link.href = window.URL.createObjectURL(blob);
-                            link.download = event.target.getAttribute("data-filename");
-                            link.click();
-                            event.target.href = link.href;
-                            event.target.download = link.download;
-                            event.target.innerHTML = "Download VSIX";
-                        } else {
-                            event.target.innerHTML = "Error. Please reload the page and try again.";
-                            alert(`Error ${this.status} error receiving the document.`);
-                        }
-                    };
-
-                    xhr.onerror = function() {
-                        event.target.innerHTML = "Error. Please reload the page and try again.";
-                        alert(`Error ${this.target.status} occurred while receiving the document.`);
-                    };
-
-                    xhr.send();
-                };
-
-                return button;
-            }
-        };
-
-        const metadataMap = {
-            Version: "version",
-            Publisher: "publisher",
-            "Unique Identifier": "identifier"
-        };
-
-        const metadataRows = document.querySelectorAll(".ux-table-metadata tr");
-
-        for (let i = 0; i < metadataRows.length; i++) {
-            const row = metadataRows[i];
-            const cells = row.querySelectorAll("td");
-            if (cells.length === 2) {
-                const key = cells[0].innerText.trim();
-                const value = cells[1].innerText.trim();
-                if (metadataMap.hasOwnProperty(key)) {
-                    extensionData[metadataMap[key]] = value;
-                }
-            }
-        }
-
-        // Handle the case where the element might not exist
-        const moreInfoElement = document.querySelector(".vscode-moreinformation");
-        if (moreInfoElement) {
-            moreInfoElement.parentElement.appendChild(extensionData.getDownloadButton()).scrollIntoView();
-        } else {
-            console.error("Element with class 'vscode-moreinformation' not found.");
-        }
+    function buildUrl(publisher, extension, version, platform) {
+        var u = "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/" +
+            encodeURIComponent(publisher) + "/vsextensions/" +
+            encodeURIComponent(extension) + "/" + encodeURIComponent(version) + "/vspackage";
+        if (platform) { u += "?targetPlatform=" + encodeURIComponent(platform); }
+        return u;
     }
-    )()
-}();
 
+    var item;
+    try {
+        item = new URL(window.location.href).searchParams.get("itemName");
+    } catch (e) { item = null; }
 
-/***
-// 2nd 
-***/
-(function() {
-    const URL_VSIX_PATTERN = 'https://marketplace.visualstudio.com/_apis/public/gallery/publishers/${publisher}/vsextensions/${extension}/${version}/vspackage';
-    const itemName = new URL(window.location.href).searchParams.get('itemName');
-    const [publisher, extension] = itemName.split('.');
-    const version = document.querySelector('#versionHistoryTab tbody tr .version-history-container-column').textContent;
-    const url = URL_VSIX_PATTERN.replace('${publisher}', publisher).replace('${extension}', extension).replace('${version}', version);
-    window.open(url, '_blank');
+    if (!item || item.indexOf(".") === -1) {
+        window.alert("Open a marketplace extension page first. The page URL needs an itemName value such as esbenp.prettier-vscode.");
+        return;
+    }
 
+    var dot = item.indexOf(".");
+    var publisher = item.slice(0, dot);
+    var extension = item.slice(dot + 1);
+
+    fetch("https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json;api-version=3.0-preview.1",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            filters: [{ criteria: [{ filterType: 7, value: item }] }],
+            flags: 1
+        })
+    }).then(function (res) {
+        if (!res.ok) { throw new Error("marketplace returned status " + res.status); }
+        return res.json();
+    }).then(function (data) {
+        var ext = data && data.results && data.results[0] && data.results[0].extensions && data.results[0].extensions[0];
+        if (!ext || !ext.versions || !ext.versions.length) { throw new Error("no version data for " + item); }
+        var versions = ext.versions;
+        var latest = versions[0].version;
+        var platforms = [];
+        for (var i = 0; i < versions.length; i++) {
+            if (versions[i].version === latest && versions[i].targetPlatform) {
+                if (platforms.indexOf(versions[i].targetPlatform) === -1) { platforms.push(versions[i].targetPlatform); }
+            }
+        }
+        if (platforms.length === 0) {
+            console.log("Downloading " + item + " " + latest);
+            window.location.href = buildUrl(publisher, extension, latest);
+        } else {
+            console.log(item + " " + latest + " ships a separate build per platform. Direct URLs follow.");
+            platforms.sort();
+            for (var j = 0; j < platforms.length; j++) {
+                console.log("  " + platforms[j] + "  ->  " + buildUrl(publisher, extension, latest, platforms[j]));
+            }
+            window.alert("This extension ships per platform builds (" + platforms.join(", ") + "). The direct download URLs are printed in the console. The web tool offers a click through picker.");
+        }
+    }).catch(function (err) {
+        window.alert("Could not build the download. " + err.message);
+    });
 })();
