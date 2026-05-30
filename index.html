@@ -3,315 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VS Code Extension Download Guide</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #e74c3c;
-            --accent-color: #3498db;
-            --background-color: #ecf0f1;
-            --text-color: #34495e;
-        }
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 600px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.5) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            transform: perspective(1000px) rotateX(5deg);
-            transition: all 0.3s ease;
-        }
-        .container:hover {
-            transform: perspective(1000px) rotateX(0deg);
-        }
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1rem;
-            display: block;
-            filter: drop-shadow(0 0 10px var(--accent-color));
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        .input-container {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 50px;
-            background-color: rgba(255,255,255,0.8);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        input[type="text"]:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px var(--accent-color);
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 50px;
-            background-color: var(--secondary-color);
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        button:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        }
-        #result, #finalUrlSection {
-            margin-top: 1.5rem;
-            text-align: left;
-        }
-        #result h2, #finalUrlSection h2 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-        #result ol {
-            padding-left: 20px;
-        }
-        #result li {
-            margin-bottom: 10px;
-        }
-        .hidden {
-            display: none;
-        }
-        .url-template, #finalUrl {
-            background-color: rgba(255,255,255,0.8);
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 10px;
-            word-break: break-all;
-        }
-        #versionInput {
-            width: calc(100% - 30px);
-            margin-top: 10px;
-        }
-        #generateFinalUrl {
-            margin-top: 10px;
-            background-color: var(--accent-color);
-        }
-        #generateFinalUrl:hover {
-            background-color: #2980b9;
-        }
-        .download-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .download-buttons button {
-            width: 48%;
-        }
-        #downloadVSIX {
-            background-color: #27ae60;
-        }
-        #downloadVSIX:hover {
-            background-color: #2ecc71;
-        }
-        #downloadVSIXPackage {
-            background-color: #8e44ad;
-        }
-        #downloadVSIXPackage:hover {
-            background-color: #9b59b6;
-        }
-        @media (max-width: 600px) {
-            .container {
-                width: 95%;
-                padding: 1.5rem;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .download-buttons {
-                flex-direction: column;
-            }
-            .download-buttons button {
-                width: 100%;
-                margin-top: 10px;
-            }
-        }
-    </style>
+    <title>VSIX Downloader for the Visual Studio Marketplace</title>
+    <meta name="description" content="Download any VS Code extension as a VSIX file directly from the Visual Studio Marketplace. Pick any version and any OS specific build. No install, no tracking, runs fully in your browser.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7a52' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 11 5 5 5-5'/%3E%3Cpath d='M5 21h14'/%3E%3C/svg%3E">
 </head>
 <body>
-    <div class="container">
-        <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            <rect x="10" y="10" width="80" height="80" rx="15" fill="url(#logo-gradient)"/>
-            <path d="M22 50L38 34L54 50L38 66L22 50Z" fill="white"/>
-            <path d="M38 34L70 22V78L38 66L38 34Z" fill="white"/>
-        </svg>
-        <h1>VS Code Extension Download Guide</h1>
-        <div class="input-container">
-            <input type="text" id="extensionUrl" placeholder="Enter VS Code extension URL">
-        </div>
-        <button onclick="generateGuide()">Generate Download Guide</button>
-        <div id="result" class="hidden">
-            <h2>Download Instructions</h2>
-            <ol id="instructions"></ol>
-        </div>
-        <div id="finalUrlSection" class="hidden">
-            <h2>Generate Final Download URLs</h2>
-            <input type="text" id="versionInput" placeholder="Enter the version number">
-            <button id="generateFinalUrl" onclick="generateFinalUrls()">Generate Final URLs</button>
-            <div id="finalUrl" class="hidden"></div>
-            <div class="download-buttons hidden">
-                <button id="downloadVSIX" onclick="downloadExtension('vsix')">Download VSIX</button>
-                <button id="downloadVSIXPackage" onclick="downloadExtension('vsixpackage')">Download VSIXPackage</button>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <span class="mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+                </span>
+                <span>
+                    <h1>VSIX Downloader</h1>
+                    <p class="sub">Grab any VS Code extension as a VSIX file. Any version, any platform.</p>
+                </span>
             </div>
-        </div>
+            <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path></svg>
+            </button>
+        </header>
+
+        <main class="panel">
+            <label class="field-label" for="input">Marketplace link, extension id, or app name</label>
+            <p class="hint">Paste one or more, one per line. Each line can be a full marketplace URL, a publisher.extension id such as <code>esbenp.prettier-vscode</code>, or a plain app name to search the marketplace.</p>
+            <textarea id="input" spellcheck="false" placeholder="esbenp.prettier-vscode&#10;ms-vscode.cpptools&#10;python"></textarea>
+            <div class="row-actions">
+                <button id="fetchBtn" class="btn btn-primary" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                    Fetch extensions
+                </button>
+                <button id="clearBtn" class="btn btn-ghost" type="button">Clear</button>
+            </div>
+            <p id="status" class="status" role="status" aria-live="polite"></p>
+        </main>
+
+        <section id="results" class="results" aria-live="polite"></section>
+
+        <details class="help">
+            <summary>How it works and is it safe</summary>
+            <h3>What this does</h3>
+            <p>It asks the official Visual Studio Marketplace gallery service for the version list of the extension you name, then builds the official Microsoft download link for the VSIX you pick. The file is served straight from Microsoft servers.</p>
+            <h3>Privacy and safety</h3>
+            <ul>
+                <li>Runs entirely in your browser. There is no backend, no account, no tracking, and no analytics.</li>
+                <li>It contacts one host only, the Microsoft marketplace gallery. No third party services are involved.</li>
+                <li>Zero dependencies and zero build step. Open the page source and read every line yourself.</li>
+            </ul>
+            <h3>Search by name</h3>
+            <p>If a line is not a link or an id, it is treated as a search. Type <code>python</code> or <code>docker</code> and the top matching extensions appear, each with its own version and platform menu.</p>
+            <h3>OS specific builds</h3>
+            <p>Some extensions such as the C and C++ tools ship a separate VSIX per platform. When that happens a platform menu appears so you can choose the right build for Windows, macOS, Linux, or Alpine, on x64 or arm.</p>
+            <h3>Offline install</h3>
+            <p>In VS Code open the Extensions view, use the menu in the top corner, choose Install from VSIX, and select the file you downloaded.</p>
+        </details>
+
+        <footer>
+            <p>Open source on <a href="https://github.com/mjmirza/Download-VSIX-From-Visual-Studio-Market-Place" target="_blank" rel="noopener">GitHub</a>. Released under the MIT License.</p>
+        </footer>
     </div>
 
-    <script>
-        let urlTemplateVSIX = '';
-        let urlTemplateVSIXPackage = '';
-        let extensionName = '';
-
-        function resetProcess() {
-            document.getElementById('result').classList.add('hidden');
-            document.getElementById('finalUrlSection').classList.add('hidden');
-            document.getElementById('instructions').innerHTML = '';
-            document.getElementById('versionInput').value = '';
-            document.getElementById('finalUrl').innerHTML = '';
-            document.getElementById('finalUrl').classList.add('hidden');
-            document.querySelector('.download-buttons').classList.add('hidden');
-        }
-
-        document.getElementById('extensionUrl').addEventListener('input', resetProcess);
-
-        function generateGuide() {
-            const url = document.getElementById('extensionUrl').value;
-            const resultElement = document.getElementById('result');
-            const instructionsElement = document.getElementById('instructions');
-            const finalUrlSection = document.getElementById('finalUrlSection');
-
-            resetProcess();
-
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-
-            try {
-                const parsedUrl = new URL(url);
-                const itemName = parsedUrl.searchParams.get('itemName');
-
-                if (!itemName) {
-                    throw new Error('Invalid URL. Please make sure it\'s a VS Code extension URL.');
-                }
-
-                const [publisher, extension] = itemName.split('.');
-                extensionName = itemName;
-
-                urlTemplateVSIX = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`;
-                urlTemplateVSIXPackage = `https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${extension}/[VERSION]/vspackage`;
-
-                const instructions = [
-                    `Visit the extension page: <a href="${url}" target="_blank">${url}</a>`,
-                    "On the extension page, look for the 'Version' number in the right sidebar.",
-                    "Copy the version number (e.g., 1.2.3) and paste it in the input field below.",
-                    "Click 'Generate Final URLs' to get the download links for both VSIX and VSIXPackage."
-                ];
-
-                instructions.forEach(instruction => {
-                    const li = document.createElement('li');
-                    li.innerHTML = instruction;
-                    instructionsElement.appendChild(li);
-                });
-
-                resultElement.classList.remove('hidden');
-                finalUrlSection.classList.remove('hidden');
-            } catch (error) {
-                alert(`An error occurred: ${error.message}`);
-            }
-        }
-
-        function generateFinalUrls() {
-            const versionInput = document.getElementById('versionInput');
-            const finalUrlElement = document.getElementById('finalUrl');
-            const downloadButtons = document.querySelector('.download-buttons');
-
-            if (!versionInput.value) {
-                alert('Please enter a version number');
-                return;
-            }
-
-            const finalUrlVSIX = urlTemplateVSIX.replace('[VERSION]', versionInput.value);
-            const finalUrlVSIXPackage = urlTemplateVSIXPackage.replace('[VERSION]', versionInput.value);
-
-            finalUrlElement.innerHTML = `
-                <strong>VSIX URL:</strong><br>${finalUrlVSIX}<br><br>
-                <strong>VSIXPackage URL:</strong><br>${finalUrlVSIXPackage}
-            `;
-            finalUrlElement.classList.remove('hidden');
-            downloadButtons.classList.remove('hidden');
-        }
-
-        function downloadExtension(type) {
-            const versionInput = document.getElementById('versionInput');
-            const version = versionInput.value;
-            
-            if (!version) {
-                alert('Please generate the final URLs first');
-                return;
-            }
-
-            let url, filename;
-            if (type === 'vsix') {
-                url = urlTemplateVSIX.replace('[VERSION]', version);
-                filename = `${extensionName}_${version}.vsix`;
-            } else {
-                url = urlTemplateVSIXPackage.replace('[VERSION]', version);
-                filename = `${extensionName}_${version}.vsixpackage`;
-            }
-
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    </script>
+    <script src="app.js" defer></script>
 </body>
 </html>
