@@ -3,7 +3,6 @@
 ![License](https://img.shields.io/badge/license-MIT-2e7d52)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-2e7d52)
 ![Build step](https://img.shields.io/badge/build-none-2e7d52)
-![Tested](https://img.shields.io/badge/tested-Playwright%20live%20marketplace-2e7d52)
 ![Tracking](https://img.shields.io/badge/tracking-none-2e7d52)
 
 Download any VS Code extension as a VSIX file straight from the official
