@@ -1,0 +1,99 @@
+name: A download did not work
+description: One extension will not download, or the wrong file came back
+title: "[download] "
+labels: ["download-problem"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Most download problems come down to one specific extension, so the
+        extension id is the single most useful thing you can give us. Without
+        it there is nothing to reproduce.
+
+  - type: input
+    id: extension-id
+    attributes:
+      label: Extension id
+      description: The publisher and name, exactly as the marketplace shows it.
+      placeholder: ms-python.python
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version you picked
+      description: Leave blank if you used whatever was selected by default.
+      placeholder: 2026.10.1
+    validations:
+      required: false
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform build you picked
+      options:
+        - No platform menu appeared
+        - win32-x64
+        - win32-arm64
+        - linux-x64
+        - linux-arm64
+        - linux-armhf
+        - alpine-x64
+        - alpine-arm64
+        - darwin-x64
+        - darwin-arm64
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: method
+    attributes:
+      label: Which of the three ways did you use
+      options:
+        - The web tool
+        - The bookmarklet
+        - The console script
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you expect, and what did you get instead?
+      placeholder: |
+        Expected a .vsix file to download.
+        Got a 0 byte file / a 404 page / nothing at all / a JSON error.
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Browser console output
+      description: >
+        Press F12, open the Console tab, retry the download, and paste anything
+        red. This is automatically formatted as code, no backticks needed.
+      render: text
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: Firefox 145 on Windows 11
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you file
+      options:
+        - label: I tried it a second time, in case the Marketplace API rate limited me.
+          required: true
+        - label: I checked that this extension actually exists on the marketplace.
+          required: true
