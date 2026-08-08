@@ -16,6 +16,7 @@
     --on-accent: oklch(1 0 0);
     --danger: oklch(0.471 0.140 30);
     --danger-soft: oklch(0.950 0.019 30);
+    --heart: oklch(0.452 0.176 24);
     --radius: 12px;
     --shadow-sm: 0 1px 2px oklch(0.27 0.02 165 / 0.06);
     --shadow-md: 0 1px 2px oklch(0.27 0.02 165 / 0.06), 0 6px 18px oklch(0.27 0.02 165 / 0.06);
@@ -32,6 +33,7 @@ html.dark {
     --accent-hover: oklch(0.832 0.152 161);
     --accent-soft: oklch(0.315 0.033 164);
     --on-accent: oklch(0.202 0.024 161);
+    --heart: oklch(0.640 0.180 24);
     --danger: oklch(0.790 0.092 28);
     --danger-soft: oklch(0.291 0.033 37);
     --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.3);
@@ -258,6 +260,12 @@ details.help code {
 footer { margin-top: 2.5rem; color: var(--muted); font-size: 0.82rem; text-align: center; }
 footer p { margin: 0.3rem 0; }
 footer a { color: var(--muted); }
+.footer-follow { margin-bottom: 1rem; color: var(--text); }
+.footer-follow a { color: var(--accent); font-weight: 500; text-underline-offset: 2px; }
+.footer-follow a:hover { color: var(--accent-hover); }
+.footer-credit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.28rem; margin-top: 1rem; font-size: 0.76rem; }
+.footer-heart { color: var(--heart); flex: none; }
+.footer-brand { color: var(--text); font-weight: 500; }
 @media (max-width: 540px) {
     .controls { grid-template-columns: 1fr; }
 }

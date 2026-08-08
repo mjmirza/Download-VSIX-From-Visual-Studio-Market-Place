@@ -1,0 +1,68 @@
+name: Something else is broken
+description: The page, the search, the layout, or anything that is not a single failed download
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If one specific extension will not download, use the download problem
+        template instead. It asks for the details that make that case
+        reproducible.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      placeholder: The suggestion list stopped appearing after I removed a chip.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Number them. Someone else has to be able to follow them exactly.
+      placeholder: |
+        1. Open the web tool
+        2. Type "python" and add the first result
+        3. Press the x on the chip
+        4. Type "docker"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Browser console output
+      description: Press F12, open the Console tab, and paste anything red.
+      render: text
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome 141 on macOS 15
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where were you running it
+      options:
+        - The hosted GitHub Pages site
+        - A local copy of index.html
+        - The bookmarklet
+        - The console script
+    validations:
+      required: true

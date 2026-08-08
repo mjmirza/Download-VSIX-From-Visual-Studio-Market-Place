@@ -1,0 +1,47 @@
+name: Suggest something
+description: An idea for the tool
+title: "[idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before you write, three constraints shape what can be accepted. The
+        tool has no dependencies, no backend, and no tracking. An idea that
+        needs any of those cannot ship here, however good it is.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you hitting
+      description: Describe the situation, not the solution.
+      placeholder: I need 40 extensions for an offline lab build and I am clicking each one by hand.
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you think would fix it
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: What you do today instead
+      description: Even an ugly workaround tells us how much this actually costs you.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Does it fit the constraints
+      options:
+        - label: It needs no dependency, no build step, and no npm install.
+          required: false
+        - label: It needs no server. Everything can run in the browser.
+          required: false
+        - label: It adds no tracking, analytics, or third party script.
+          required: false

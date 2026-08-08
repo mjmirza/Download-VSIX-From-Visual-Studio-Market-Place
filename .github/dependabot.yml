@@ -1,0 +1,10 @@
+# The tool itself has zero dependencies, so there is no package ecosystem to
+# watch. Actions are the one supply chain surface this repository does carry.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security problem
+    url: https://github.com/mjmirza/Download-VSIX-From-Visual-Studio-Market-Place/security/advisories/new
+    about: Report privately, never as a public issue. Opens a thread only the maintainer sees.
+  - name: A question about using the tool
+    url: https://github.com/mjmirza/Download-VSIX-From-Visual-Studio-Market-Place/discussions
+    about: Ask here rather than opening an issue.
+  - name: The extension itself is broken
+    url: https://marketplace.visualstudio.com/
+    about: This tool only builds a download link. A bug inside an extension belongs to its publisher.
