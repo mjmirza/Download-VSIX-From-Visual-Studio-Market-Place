@@ -221,7 +221,7 @@ details.help code {
 .combo-icon {
     position: absolute;
     left: 0.8rem;
-    top: 1.15rem;
+    top: 50%;
     transform: translateY(-50%);
     color: var(--muted);
     pointer-events: none;
@@ -260,9 +260,11 @@ details.help code {
 footer { margin-top: 2.5rem; color: var(--muted); font-size: 0.82rem; text-align: center; }
 footer p { margin: 0.3rem 0; }
 footer a { color: var(--muted); }
-.footer-follow { margin-bottom: 1rem; color: var(--text); }
-.footer-follow a { color: var(--accent); font-weight: 500; text-underline-offset: 2px; }
-.footer-follow a:hover { color: var(--accent-hover); }
+.footer-follow { margin-bottom: 0.35rem; color: var(--text); }
+.footer-follow a, .footer-links a { color: var(--accent); font-weight: 500; text-underline-offset: 2px; }
+.footer-follow a:hover, .footer-links a:hover { color: var(--accent-hover); }
+.footer-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.45rem; margin-bottom: 1rem; }
+.footer-links span { color: var(--border); }
 .footer-credit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.28rem; margin-top: 1rem; font-size: 0.76rem; }
 .footer-heart { color: var(--heart); flex: none; }
 .footer-brand { color: var(--text); font-weight: 500; }
